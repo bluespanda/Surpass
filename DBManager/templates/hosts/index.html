@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1><a href="{% url 'db:host_edit_page' 0 %}">新主机</a></h1>
+{% for host in hosts %}
+    <a href="{% url 'db:host_edit_page' host.id %}">{{ host.name }}</a>
+    <a href="{% url 'db:host_delete' host.id %}">删除</a>
+    <br/>
+{% endfor %}
+</body>
+</html>

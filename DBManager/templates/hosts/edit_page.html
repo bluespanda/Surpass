@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Page</title>
+</head>
+<body>
+    <form action="{%url 'db:host_edit_action'%}" method="post">
+        {% csrf_token%}
+        {% if host %}
+            <input type="hidden" name="host_id" value="{{host.id}}" />
+        {% else %}
+            <input type="hidden" name="host_id" value="0" />
+        {% endif %}
+        <label>
+            主机名称
+            <input type="text" name="name" value="{{host.name}}"/>
+        </label>
+        <br/>
+        <label>
+            IP
+            <input type="text" name="ip" value="{{host.ip}}"/>
+        </label>
+        <br/>
+        <label>
+            root用户名称
+            <input type="text" name="root" value="{{host.root}}"/>
+        </label>
+        <br/>
+        <label>
+            root用户口令
+            <input type="password" name="rootpwd" value="{{host.rootpwd}}"/>
+        </label>
+        <br/>
+        <label>
+            只读用户名称
+            <input type="text" name="read" value="{{host.read}}"/>
+        </label>
+        <br/>
+        <label>
+            只读用户口令
+            <input type="password" name="readpwd" value="{{host.readpwd}}"/>
+        </label>
+        <br/>
+
+        <input type="submit" value="提交"/>
+    </form>
+</body>
+</html>
