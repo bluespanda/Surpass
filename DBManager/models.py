@@ -22,7 +22,7 @@ class Host(models.Model):
     comment = models.TextField()
 
     class Meta:
-        db_table = 'host'
+        db_table = 'dbmanager_host'
 
     def __str__(self):
         return str(self.id) + " - " + self.name + " - " + self.ip
