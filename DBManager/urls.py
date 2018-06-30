@@ -22,6 +22,7 @@ app_name = 'db'
 urlpatterns = [
     path('', views.index, name="index"),
     path('host/list', views.host_list, name="host_list"),
+    url('^host/getdetail/(?P<host_id>[0-9]+)$', views.host_detail, name="host_detail"),
     url('^host/edit/(?P<host_id>[0-9]+)$', views.host_edit_page, name="host_edit_page"),
     url('^host/delete/(?P<host_id>[0-9]+)$', views.host_delete, name="host_delete"),
     path('host/action/', views.host_edit_action, name="host_edit_action"),

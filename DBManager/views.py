@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from . import models
+from Surpass.utils import JsonHelper
 
 
 # Create your views here.
@@ -9,7 +10,12 @@ def index(request):
 
 def host_list(request):
     hosts = models.Host.objects.all()
-    return render(request, "hosts/index.html", {'hosts': hosts})
+    return render(request, "toJson.html", {'DATA': JsonHelper.toJSON(hosts, 1, 1, hosts.count())})
+
+
+def host_detail(request, host_id):
+    host = models.Host.objects.get(pk=host_id)
+    return render(request, "toJson.html", {'DATA': JsonHelper.toJSON(host)})
 
 
 def host_edit_page(request, host_id):
