@@ -30,7 +30,18 @@ class JsonHelper:
         if obj is None:
             return "{}"
         elif isinstance(obj, models.Model):
-            return obj.get_json()
+            if hasattr(obj,'get_json'):
+                return obj.get_json()
+            else:
+                result = {}
+                for attr in [f.name for f in obj._meta.fields]:
+                    if isinstance(getattr(obj, attr), datetime.datetime):
+                        result[str(attr).upper()] = getattr(obj, attr).strftime('%Y-%m-%d %H:%M:%S')
+                    elif isinstance(getattr(obj, attr), datetime.date):
+                        result[str(attr).upper()] = getattr(obj, attr).strftime('%Y-%m-%d')
+                    else:
+                        result[str(attr).upper()] = getattr(obj, attr)
+                return json.dumps(result)
         elif isinstance(obj, QuerySet):
             data = []
             if pageindex <= 0 or pagesize <= 0:
