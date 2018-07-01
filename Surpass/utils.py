@@ -53,7 +53,7 @@ class JsonHelper:
                     data = []
                 else:
                     for i in range(pagesize * (pageindex - 1), pagesize * pageindex):
-                        if obj[i] is None:
+                        if obj[i] is None or count <= 0 or i > count:
                             break
                         else:
                             data.append(json.loads(JsonHelper.toJSON(obj[i])))
