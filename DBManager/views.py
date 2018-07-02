@@ -54,3 +54,27 @@ def host_edit_action(request):
         host.save()
     hosts = models.Host.objects.all()
     return render(request, "hosts/index.html", {'hosts': hosts})
+
+
+def database_list(request):
+    databases = models.Database.objects.all()
+    return render(request, "toJson.html", {'DATA': JsonHelper.toJSON(databases, 1, 1, databases.count())})
+
+
+def database_edit_action(request):
+    databasename = request.POST.get('databasename')
+    charset = request.POST.get('charset')
+    database_id = request.POST.get('database_id', '0')
+    if database_id == '0':
+        models.Database.objects.create(databaseName=databasename, charset=charset)
+        #保存完后还要完成创建数据库的操作
+
+    else:
+        database = models.Database.objects.get(pk=database_id)
+        database.databaseName = databasename
+        database.charSet = charset
+        database.save()
+        #保存完后还要完成创建数据库的操作
+
+    databases = models.Database.objects.all()
+    return render(request, "databases/index.html", {'databases': databases})
