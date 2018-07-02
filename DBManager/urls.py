@@ -26,8 +26,11 @@ urlpatterns = [
     url('^host/edit/(?P<host_id>[0-9]+)$', views.host_edit_page, name="host_edit_page"),
     url('^host/delete/(?P<host_id>[0-9]+)$', views.host_delete, name="host_delete"),
     path('host/action/', views.host_edit_action, name="host_edit_action"),
+
     path('database/list', views.database_list, name="database_list"),
-    path('host/action/', views.database_edit_action, name="database_edit_action"),
+    url('^databases', views.databases),
+    url('^database/edit/(?P<database_id>[0-9]+)$', views.database_edit_page, name="database_edit_page"),
+    path('database/action/', views.database_edit_action, name="database_edit_action"),
 
 
 

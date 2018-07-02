@@ -61,20 +61,32 @@ def database_list(request):
     return render(request, "toJson.html", {'DATA': JsonHelper.toJSON(databases, 1, 1, databases.count())})
 
 
+def databases(request):
+    databaselist = models.Database.objects.all()
+    return render(request, "databases/index.html", {'databaselist': databaselist})
+
+
+def database_edit_page(request, database_id):
+    if str(database_id) == '0':
+        return render(request, "databases/edit_page.html")
+    database = models.Database.objects.get(pk=database_id)
+    return render(request, "databases/edit_page.html", {'database': database})
+
+
 def database_edit_action(request):
-    databasename = request.POST.get('databasename')
-    charset = request.POST.get('charset')
+    databasename = request.POST.get('databaseName')
+    dbcharSet = request.POST.get('dbcharSet', 'utf-8')
     database_id = request.POST.get('database_id', '0')
     if database_id == '0':
-        models.Database.objects.create(databaseName=databasename, charset=charset)
+        models.Database.objects.create(databaseName=databasename, dbcharSet=dbcharSet)
         #保存完后还要完成创建数据库的操作
 
     else:
         database = models.Database.objects.get(pk=database_id)
         database.databaseName = databasename
-        database.charSet = charset
+        database.dbcharSet = dbcharSet
         database.save()
         #保存完后还要完成创建数据库的操作
 
-    databases = models.Database.objects.all()
-    return render(request, "databases/index.html", {'databases': databases})
+    odatabases = models.Database.objects.all()
+    return render(request, "databases/index.html", {'databases': odatabases})

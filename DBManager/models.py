@@ -21,10 +21,6 @@ class Host(models.Model):
     read = models.CharField(max_length=255, null=False)
     comment = models.TextField()
 
-    class Database(models.Model):
-        databaseName = models.CharField(max_length=255, null=False)
-        charSet = models.CharField(max_length=255, null=False, default='utf-8')
-
     class Meta:
         db_table = 'dbmanager_host'
 
@@ -48,3 +44,8 @@ class Host(models.Model):
             else:
                 result[str(attr).upper()] = getattr(self, attr)
         return json.dumps(result)
+
+
+class Database(models.Model):
+    databaseName = models.CharField(max_length=255, null=False)
+    dbcharSet = models.CharField(max_length=255, null=False, default='utf-8')

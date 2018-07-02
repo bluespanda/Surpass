@@ -8,9 +8,9 @@
 </head>
 <body>
 <h1><a href="{% url 'db:database_edit_page' 0 %}">创建数据库</a></h1>
-{% for database in databases %}
-    <a href="{% url 'db:database_edit_page' host.id %}">{{ host.name }}</a>
-    <a href="{% url 'db:database_delete' host.id %}">删除</a>
+{% for database in databaselist %}
+    <a href="{% url 'db:database_edit_page' database.id %}">{{ database.databaseName }}</a>
+    <a href="">删除</a>
     <br/>
 {% endfor %}
 </body>
