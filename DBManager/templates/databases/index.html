@@ -10,7 +10,7 @@
 <h1><a href="{% url 'db:database_edit_page' 0 %}">创建数据库</a></h1>
 {% for database in databaselist %}
     <a href="{% url 'db:database_edit_page' database.id %}">{{ database.databaseName }}</a>
-    <a href="">删除</a>
+    <a href="{% url 'db:database_edit_page' database.id %}">删除</a>
     <br/>
 {% endfor %}
 </body>

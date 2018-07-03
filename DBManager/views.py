@@ -90,3 +90,12 @@ def database_edit_action(request):
 
     odatabases = models.Database.objects.all()
     return render(request, "databases/index.html", {'databases': odatabases})
+
+
+def database_delete_page(request,database_id):
+    if str(database_id) != '0':
+        database = models.Database.objects.get(pk=database_id)
+        database.delete()
+        #删除数据库中对象后要完成相应数据库的删除操作
+    odatabases = models.Database.objects.all()
+    return render(request, "databases/index.html", {'databases': odatabases})
