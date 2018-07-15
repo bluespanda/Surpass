@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from DBManager.dbutils import cre_db
 from . import models
 from Surpass.utils import JsonHelper
 
@@ -74,20 +76,24 @@ def database_edit_page(request, database_id):
 
 
 def database_edit_action(request):
+    #正确的创建数据库的步骤不应该是这样的应该是先有一步，连接数据库成功后，在已有连接上进行数据库的创建#
+    host = request.POST.get('host')
+    username = request.POST.get('username')
+    password = request.POST.get('password')
     databasename = request.POST.get('databaseName')
     dbcharSet = request.POST.get('dbcharSet', 'utf-8')
     database_id = request.POST.get('database_id', '0')
     if database_id == '0':
         models.Database.objects.create(databaseName=databasename, dbcharSet=dbcharSet)
         #保存完后还要完成创建数据库的操作
-
+        cre_db(host,username,password,databasename)
     else:
         database = models.Database.objects.get(pk=database_id)
         database.databaseName = databasename
         database.dbcharSet = dbcharSet
         database.save()
         #保存完后还要完成创建数据库的操作
-
+        cre_db(host,username,password,databasename)
     odatabases = models.Database.objects.all()
     return render(request, "databases/index.html", {'databases': odatabases})
 
