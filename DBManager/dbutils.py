@@ -8,7 +8,7 @@
     :license: GPLv2, see LICENSE File for more details.
 """
 
-import PyMySQL
+import pymysql as PyMySQL
 
 db_host = ''
 db_user = ''
@@ -40,4 +40,4 @@ def cre_db(host, user, pw, name):
         db.close()
 
 
-cre_db(db_host, db_user, db_pw)
+# cre_db(db_host, db_user, db_pw)

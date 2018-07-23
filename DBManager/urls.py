@@ -33,18 +33,6 @@ urlpatterns = [
     url('^database/delete/(?P<database_id>[0-9]+)$', views.database_delete_page, name="database_delete_page"),
     path('database/action/', views.database_edit_action, name="database_edit_action"),
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    url("^db_user_lists/(?P<host_id>[0-9]+)$", views.db_user_lists, name="db_user_lists")
 
 ]

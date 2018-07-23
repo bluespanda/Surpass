@@ -3,23 +3,17 @@ import json
 
 from django.db import models
 
+
 # Create your models here.
 
 
 class Host(models.Model):
     name = models.CharField(max_length=255, null=False)
     ip = models.CharField(max_length=255, null=False)
-    cpu = models.CharField(max_length=255)
-    mem = models.CharField(max_length=255)
-    disk = models.CharField(max_length=255)
-    idc = models.CharField(max_length=255)
-    rootpwd = models.CharField(max_length=255, null=False)
-    readpwd = models.CharField(max_length=255, null=False)
-    group = models.CharField(max_length=255)
+    port = models.IntegerField(null=False)
+    username = models.CharField(max_length=255, null=False)
+    password = models.CharField(max_length=255, null=False)
     createdTime = models.DateTimeField(auto_now_add=True)
-    root = models.CharField(max_length=255, null=False)
-    read = models.CharField(max_length=255, null=False)
-    comment = models.TextField()
 
     class Meta:
         db_table = 'dbmanager_host'
@@ -29,8 +23,7 @@ class Host(models.Model):
 
     def getfield(self):
         field = [f.name for f in self._meta.fields]
-        field.remove('rootpwd')
-        field.remove('readpwd')
+        field.remove('password')
         return field
 
     def get_json(self):

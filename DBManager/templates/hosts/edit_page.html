@@ -15,33 +15,28 @@
             <input type="hidden" name="host_id" value="0" />
         {% endif %}
         <label>
-            主机名称
+            连接名
             <input type="text" name="name" value="{{host.name}}"/>
         </label>
         <br/>
         <label>
-            IP
+            主机名或IP地址
             <input type="text" name="ip" value="{{host.ip}}"/>
         </label>
         <br/>
         <label>
-            root用户名称
-            <input type="text" name="root" value="{{host.root}}"/>
+            端口
+            <input type="text" name="port" value="{{host.port}}"/>
         </label>
         <br/>
         <label>
-            root用户口令
-            <input type="password" name="rootpwd" value="{{host.rootpwd}}"/>
+            用户名
+            <input type="text" name="username" value="{{host.username}}"/>
         </label>
         <br/>
         <label>
-            只读用户名称
-            <input type="text" name="read" value="{{host.read}}"/>
-        </label>
-        <br/>
-        <label>
-            只读用户口令
-            <input type="password" name="readpwd" value="{{host.readpwd}}"/>
+            密码
+            <input type="password" name="password" value="{{host.password}}"/>
         </label>
         <br/>
 

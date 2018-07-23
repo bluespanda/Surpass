@@ -30,7 +30,7 @@ class JsonHelper:
         if obj is None:
             return "{}"
         elif isinstance(obj, models.Model):
-            if hasattr(obj,'get_json'):
+            if hasattr(obj, 'get_json'):
                 return obj.get_json()
             else:
                 result = {}
@@ -42,7 +42,7 @@ class JsonHelper:
                     else:
                         result[str(attr).upper()] = getattr(obj, attr)
                 return json.dumps(result)
-        elif isinstance(obj, QuerySet):
+        elif isinstance(obj, QuerySet) or isinstance(obj, list):
             data = []
             if pageindex <= 0 or pagesize <= 0:
                 for o in obj:
@@ -59,6 +59,8 @@ class JsonHelper:
                             data.append(json.loads(JsonHelper.toJSON(obj[i])))
                 result = {'DATA': data, 'PAGER': JsonHelper.genePager(pagesize, pageindex, count)}
                 return json.dumps(result)
+        elif isinstance(obj, dict):
+            return json.dumps(obj)
         else:
             result = {}
             for attr in [f.name for f in obj._meta.fields]:
@@ -80,3 +82,10 @@ class JsonHelper:
         else:
             pagecount = 0
         return {'PAGESIZE': pagesize, 'PAGEINDEX': pageindex, 'COUNT': count, 'PAGECOUNT': pagecount}
+
+
+class StringUtils:
+
+    @classmethod
+    def is_empty(cls, new_str):
+        return new_str is None or len(new_str) < 1

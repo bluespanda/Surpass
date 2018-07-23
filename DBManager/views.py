@@ -3,6 +3,7 @@ from django.shortcuts import render
 from DBManager.dbutils import cre_db
 from . import models
 from Surpass.utils import JsonHelper
+from Surpass.utils import StringUtils
 
 
 # Create your views here.
@@ -36,23 +37,21 @@ def host_delete(request, host_id):
 
 
 def host_edit_action(request):
-    readpwd = request.POST.get('readpwd')
-    read = request.POST.get('read')
-    rootpwd = request.POST.get('rootpwd')
-    root = request.POST.get("root")
-    ip = request.POST.get("ip")
-    name = request.POST.get('name')
     host_id = request.POST.get('host_id', '0')
+    name = request.POST.get('name')
+    ip = request.POST.get("ip")
+    port = request.POST.get("port")
+    username = request.POST.get("username")
+    password = request.POST.get("password")
     if host_id == '0':
-        models.Host.objects.create(name=name, ip=ip, root=root, rootpwd=rootpwd, read=read, readpwd=readpwd)
+        models.Host.objects.create(name=name, ip=ip, port=port, username=username, password=password)
     else:
         host = models.Host.objects.get(pk=host_id)
         host.name = name
         host.ip = ip
-        host.root = root
-        host.rootpwd = rootpwd
-        host.read = read
-        host.readpwd = readpwd
+        host.port = port
+        host.username = username
+        host.password = password
         host.save()
     hosts = models.Host.objects.all()
     return render(request, "hosts/index.html", {'hosts': hosts})
@@ -76,7 +75,7 @@ def database_edit_page(request, database_id):
 
 
 def database_edit_action(request):
-    #正确的创建数据库的步骤不应该是这样的应该是先有一步，连接数据库成功后，在已有连接上进行数据库的创建#
+    # 正确的创建数据库的步骤不应该是这样的应该是先有一步，连接数据库成功后，在已有连接上进行数据库的创建#
     host = request.POST.get('host')
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -85,23 +84,49 @@ def database_edit_action(request):
     database_id = request.POST.get('database_id', '0')
     if database_id == '0':
         models.Database.objects.create(databaseName=databasename, dbcharSet=dbcharSet)
-        #保存完后还要完成创建数据库的操作
-        cre_db(host,username,password,databasename)
+        # 保存完后还要完成创建数据库的操作
+        cre_db(host, username, password, databasename)
     else:
         database = models.Database.objects.get(pk=database_id)
         database.databaseName = databasename
         database.dbcharSet = dbcharSet
         database.save()
-        #保存完后还要完成创建数据库的操作
-        cre_db(host,username,password,databasename)
+        # 保存完后还要完成创建数据库的操作
+        cre_db(host, username, password, databasename)
     odatabases = models.Database.objects.all()
     return render(request, "databases/index.html", {'databases': odatabases})
 
 
-def database_delete_page(request,database_id):
+def database_delete_page(request, database_id):
     if str(database_id) != '0':
         database = models.Database.objects.get(pk=database_id)
         database.delete()
-        #删除数据库中对象后要完成相应数据库的删除操作
+        # 删除数据库中对象后要完成相应数据库的删除操作
     odatabases = models.Database.objects.all()
     return render(request, "databases/index.html", {'databases': odatabases})
+
+
+def db_user_lists(request, host_id):
+    if StringUtils.is_empty(host_id) or int(host_id) < 1:
+        return render(request, "error.html", {"ERROR": {"MSG": "相关主机不存在"}})
+    else:
+        try:
+            host = models.Host.objects.get(pk=host_id)
+            sql = "select Host,User from mysql.user;"
+            import pymysql
+            db = pymysql.connect(host=host.ip, user=host.username, password=host.password, database='mysql',
+                                 port=host.port, unix_socket=None, charset='utf8')
+            cursor = db.cursor()
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            user_lists = []
+            for row in rows:
+                user = {
+                    "Host": row[0],
+                    "User": row[1]
+                }
+                user_lists.append(user)
+            return render(request, "toJson.html", {'DATA': JsonHelper.toJSON(user_lists, 0, 0, len(user_lists))})
+        except Exception as e:
+            print(e.args)
+            return render(request, "error.html", {"ERROR": {"MSG": "相关主机不存在"}})
