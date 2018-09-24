@@ -18,33 +18,19 @@ from django.conf.urls import url
 from . import views
 
 app_name = 'db'
-
 urlpatterns = [
     path('', views.index, name="index"),
     path('host/list', views.host_list, name="host_list"),
-    url('^host/getdetail/(?P<host_id>[0-9]+)$', views.host_detail, name="host_detail"),
+    url('^host/get_detail/(?P<host_id>[0-9]+)$', views.host_detail, name="host_detail"),
     url('^host/edit/(?P<host_id>[0-9]+)$', views.host_edit_page, name="host_edit_page"),
     url('^host/delete/(?P<host_id>[0-9]+)$', views.host_delete, name="host_delete"),
     path('host/action/', views.host_edit_action, name="host_edit_action"),
 
-    path('database/list', views.database_list, name="database_list"),
-    url('^databases', views.databases),
-    url('^database/edit/(?P<database_id>[0-9]+)$', views.database_edit_page, name="database_edit_page"),
-    url('^database/delete/(?P<database_id>[0-9]+)$', views.database_delete_page, name="database_delete_page"),
-    path('database/action/', views.database_edit_action, name="database_edit_action"),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    url('^databases/list$', views.database_list, name="database_list"),
+    url('^databases/list/(?P<host_id>[0-9]+)$', views.databases_for_host, name="host_db_list"),
+    # url('^databases', views.databases),
+    # url('^database/edit/(?P<database_id>[0-9]+)$', views.database_edit_page, name="database_edit_page"),
+    # url('^database/delete/(?P<database_id>[0-9]+)$', views.database_delete_page, name="database_delete_page"),
+    # path('database/action/', views.database_edit_action, name="database_edit_action"),
 ]
+

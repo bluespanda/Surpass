@@ -14,11 +14,12 @@ class Host(models.Model):
     disk = models.CharField(max_length=255)
     idc = models.CharField(max_length=255)
     rootpwd = models.CharField(max_length=255, null=False)
-    readpwd = models.CharField(max_length=255, null=False)
+    readpwd = models.CharField(max_length=255)
     group = models.CharField(max_length=255)
     createdTime = models.DateTimeField(auto_now_add=True)
     root = models.CharField(max_length=255, null=False)
-    read = models.CharField(max_length=255, null=False)
+    read = models.CharField(max_length=255)
+    port = models.CharField(max_length=6)
     comment = models.TextField()
 
     class Meta:

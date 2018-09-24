@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>出错了！</title>
+    <meta http-equiv="refresh" content="5; url={{ return_url }}">
+</head>
+<body>
+        <h2>抱歉，出现错误了！</h2>
+        <p>{{ error_msg }}，您可以点击返回<a href="javascript:window.history.back()">上一页</a>或<a href="{{ return_url }}">回调页面</a>。</p>
+		<p>Surpass提醒您，5秒后自动跳转相关回调页面。</p>
+</body>
+</html>

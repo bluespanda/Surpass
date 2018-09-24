@@ -59,6 +59,8 @@ class JsonHelper:
                             data.append(json.loads(JsonHelper.toJSON(obj[i])))
                 result = {'DATA': data, 'PAGER': JsonHelper.genePager(pagesize, pageindex, count)}
                 return json.dumps(result)
+        elif isinstance(obj, list):
+            return json.dumps(obj)
         else:
             result = {}
             for attr in [f.name for f in obj._meta.fields]:

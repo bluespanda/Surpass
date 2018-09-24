@@ -8,12 +8,7 @@
     :license: GPLv2, see LICENSE File for more details.
 """
 
-import PyMySQL
-
-db_host = ''
-db_user = ''
-db_pw = ''
-db_name = 'vdt'
+import pymysql as PyMySQL
 
 
 def cre_db(host, user, pw, name):
@@ -27,12 +22,8 @@ def cre_db(host, user, pw, name):
         rows = cursor.fetchall()
         for row in rows:
             tmp = "%2s" % row
-            # 判断数据库是否存在
-            if name == tmp:
-                cursor.execute('drop database if exists ' + name)
-                cursor.execute('create database if not exists ' + name)
-                # 提交到数据库执行
-                db.commit()
+            print(row[0])
+            print(tmp)
     except PyMySQL.Error as e:
         print('Mysql Error %d: %s') % (e.args[0], e.args[1])
     finally:
@@ -40,4 +31,18 @@ def cre_db(host, user, pw, name):
         db.close()
 
 
-cre_db(db_host, db_user, db_pw)
+def get_all_dbs(ip, port, user, password, charset):
+    data = []
+    try:
+        db = PyMySQL.connect(host=ip, port=port, user=user, passwd=password, charset=charset)
+        cursor = db.cursor()
+        cursor.execute('show databases')
+        rows = cursor.fetchall()
+        for row in rows:
+            data.append(row[0])
+    except PyMySQL.Error as e:
+        print('Mysql Error %d: %s') % (e.args[0], e.args[1])
+    finally:
+        if db is not None:
+            db.close()
+        return data
