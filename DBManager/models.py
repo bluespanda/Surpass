@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -21,9 +22,6 @@ class Host(models.Model):
     read = models.CharField(max_length=255)
     port = models.CharField(max_length=6)
     comment = models.TextField()
-
-    class Meta:
-        db_table = 'dbmanager_host'
 
     def __str__(self):
         return str(self.id) + " - " + self.name + " - " + self.ip
