@@ -67,11 +67,26 @@ def database_list(request):
     return render(request, "databases/hosts.html", {'DATA': hosts})
 
 
+def user_list(request):
+    hosts = models.Host.objects.all()
+    return render(request, "user/hosts.html", {'DATA': hosts})
+
+
 def databases_for_host(request, host_id):
     if str(host_id) == '0':
         return render(request, "404.html", {'return_url': "/", "error_msg": "相关请求数据错误！"})
     host = models.Host.objects.get(pk=host_id)
     data = dbutils.get_all_dbs(host.ip, int(host.port), host.root, host.rootpwd, "utf8")
+    return render(request, "toJson.html", {'DATA': JsonHelper.toJSON(data, 1, 1, len(data))})
+
+
+def users_for_host(request, host_id):
+    if str(host_id) == '0':
+        return render(request, "404.html", {'return_url': "/", "error_msg": "相关请求数据错误！"})
+    host = models.Host.objects.get(pk=host_id)
+    if host.root != 'root':
+        return render(request, "erroor.html", {'return_url': "/", "error_msg": "只有root用户拥有权限查看所有用户信息！"})
+    data = dbutils.get_all_users(host.ip, int(host.port), host.root, host.rootpwd, "utf8")
     return render(request, "toJson.html", {'DATA': JsonHelper.toJSON(data, 1, 1, len(data))})
 
 

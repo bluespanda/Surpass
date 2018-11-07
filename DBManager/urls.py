@@ -32,5 +32,8 @@ urlpatterns = [
     # url('^database/edit/(?P<database_id>[0-9]+)$', views.database_edit_page, name="database_edit_page"),
     # url('^database/delete/(?P<database_id>[0-9]+)$', views.database_delete_page, name="database_delete_page"),
     # path('database/action/', views.database_edit_action, name="database_edit_action"),
+
+    url('^user/list$', views.user_list, name="user_list"),
+    url('^user/list/(?P<host_id>[0-9]+)$', views.users_for_host, name="host_user_list"),
 ]
 

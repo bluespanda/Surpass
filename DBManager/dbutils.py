@@ -46,3 +46,20 @@ def get_all_dbs(ip, port, user, password, charset):
         if db is not None:
             db.close()
         return data
+
+
+def get_all_users(ip, port, username, password, charset):
+    data = [];
+    try:
+        db = PyMySQL.connect(host=ip, port=port, user=username, passwd=password, charset=charset)
+        cursor = db.cursor()
+        cursor.execute('select user,host from mysql.user')
+        rows = cursor.fetchall()
+        for row in rows:
+            data.append(row[0])
+    except PyMySQL.Error as e:
+        print('Mysql Error %d: %s') % (e.args[0], e.args[1])
+    finally:
+        if db is not None:
+            db.close()
+        return data
